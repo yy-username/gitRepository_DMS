@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="iplat4j-core" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	metadata-complete="true">
+	<display-name>iPlatDAM</display-name>
+
+	<context-param>
+		<param-name>light:administration:base-url</param-name>
+		<param-value>/admin</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>light:administration:security</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>light:administration:base-package</param-name>
+		<param-value>com.baosight.iplat4j.model.meta.admin</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>light:administration:back-to-site-url</param-name>
+		<param-value>.</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:spring/framework/boot.xml,
+			classpath*:spring/framework/platApplicationContext*.xml,
+			classpath*:spring/**/applicationContext*.xml
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>com.baosight.iplat4j.core.web.listener.PlatformContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+
+	<!-- Plat Session Filter -->
+	<filter>
+		<filter-name>platSessionFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>platSessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>diagnoseFilter</filter-name>
+		<filter-class>com.baosight.iplat4j.core.web.filter.DiagnoseFilter</filter-class>
+		<init-param>
+			<param-name>exclude</param-name>
+			<param-value>.*(alive\.jsp|\.(js|css|gif|png|jpg|jpeg|bmp|ico|html))($|\?.*)</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>diagnoseFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>filterChainProxy</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterChainProxy</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+ 	<listener>
+        <listener-class>com.baosight.iplat4j.ep.metrics.HealthCheckServletContextListener </listener-class>
+	</listener>
+	<listener>
+        <listener-class>com.baosight.iplat4j.ep.metrics.MetricsServletContextListener</listener-class>
+	</listener>
+	
+	<servlet>
+        <servlet-name>metrics</servlet-name>
+        <servlet-class>com.baosight.iplat4j.ep.metrics.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>metrics</servlet-name>
+        <url-pattern>/metrics/*</url-pattern>
+    </servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/dispatcherServlet-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServiceDispatcher</servlet-name>
+		<servlet-class>com.baosight.iplat4j.core.web.servlet.ServiceDispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServiceDispatcher</servlet-name>
+		<url-pattern>/EiService</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>receiveMessageDispatcher</servlet-name>
+		<servlet-class>com.baosight.xservices.em.servlet.ReceiveMessageDispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>receiveMessageDispatcher</servlet-name>
+		<url-pattern>/receiveMessage</url-pattern>
+	</servlet-mapping>
+
+	<!--新增对接4M接收消息服务实现-->
+	<servlet>
+		<servlet-name>receive4MMessageDispatcher</servlet-name>
+		<servlet-class>com.baosight.xservices.em.servlet.Receive4MMessageDispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>receive4MMessageDispatcher</servlet-name>
+		<url-pattern>/receive4MMessage</url-pattern>
+	</servlet-mapping>
+
+	<!--新增对接iPlatV3的请求实现-->
+	<servlet>
+		<servlet-name>RestService4V3Dispatcher</servlet-name>
+		<servlet-class>com.baosight.xservices.em.servlet.ReceiveV3HandlerDispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>RestService4V3Dispatcher</servlet-name>
+		<url-pattern>/RestService</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>captcha</servlet-name>
+		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+		<init-param>
+			<param-name>kaptcha.image.width</param-name>
+			<param-value>76</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.image.height</param-name>
+			<param-value>32</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.font.size</param-name>
+			<param-value>28</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.char.string</param-name>
+			<param-value>0123456789</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.char.length</param-name>
+			<param-value>4</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.noise.impl</param-name>
+			<param-value>com.google.code.kaptcha.impl.NoNoise</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>captcha</servlet-name>
+		<url-pattern>/captcha.jpg</url-pattern>
+	</servlet-mapping>
+
+	<!-- 添加MVC -->
+	<servlet>
+		<servlet-name>spring-mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				classpath*:spring/**/platWebApplicationContext*.xml
+				classpath*:spring/**/webApplicationContext*.xml
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring-mvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>EiExportServlet</servlet-name>
+		<servlet-class>com.baosight.iplat4j.core.web.servlet.ExportServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>EiExportServlet</servlet-name>
+		<url-pattern>/export</url-pattern>
+	</servlet-mapping>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/EP/EP01.jsp</location>
+    </error-page>
+
+</web-app>

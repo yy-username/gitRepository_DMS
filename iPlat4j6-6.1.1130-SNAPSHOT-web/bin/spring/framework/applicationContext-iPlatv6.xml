@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <bean id="keyPairLocator" class="com.baosight.iplat4j.core.security.sso.SecretKeyPairLocator4Config">
+        <property name="keyPairMapping">
+            <map>
+                <entry key="IPLAT4J">
+                    <bean class="com.baosight.iplat4j.core.security.sso.SecretKeyPair4DSA">
+                        <property name="public"
+                                  value="308201b83082012c06072a8648ce3804013082011f02818100fd7f53811d75122952df4a9c2eece4e7f611b7523cef4400c31e3f80b6512669455d402251fb593d8d58fabfc5f5ba30f6cb9b556cd7813b801d346ff26660b76b9950a5a49f9fe8047b1022c24fbba9d7feb7c61bf83b57e7c6a8a6150f04fb83f6d3c51ec3023554135a169132f675f3ae2b61d72aeff22203199dd14801c70215009760508f15230bccb292b982a2eb840bf0581cf502818100f7e1a085d69b3ddecbbcab5c36b857b97994afbbfa3aea82f9574c0b3d0782675159578ebad4594fe67107108180b449167123e84c281613b7cf09328cc8a6e13c167a8b547c8d28e0a3ae1e2bb3a675916ea37f0bfa213562f1fb627a01243bcca4f1bea8519089a883dfe15ae59f06928b665e807b552564014c3bfecf492a038185000281810097a59a51837bdfa80bf5a00ee10e02a0aa37740a3ca8c55842bcba68cc6d108cb2ee5cad403bf87d047187b8816b71b0ed635fbae13a052df56d97c8ab339d84256a8a89f6dcc34198f89e7ee64b123c2887261c945d5a3c9a71d7eb90cdddfa5b7a4ed24350cc1424365b05150faf8106e04ed770a35af203694a4b514881dc"/>
+                    </bean>
+                </entry>
+                <entry key="IPLAT4C">
+                    <bean class="com.baosight.iplat4j.core.security.sso.SecretKeyPair4DSA">
+                        <property name="public"
+                                  value="308201b63082012b06072a8648ce3804013082011e02818100e2eb8d017a5d77b1d254f14bf782c38bf6e31e1849d11e93a09c7255e4b1e3cd2b9aaec7f4a37c80a1068f025c810b283b703f7772a6a3a88736b738dc6041dfeea53321a2010ba9c781943f45ce12c05c1dea16811c339290600447f5573bc7c3f4d63ff31aed714f9b64485cf196ae9f4de63d7273e2b797f8f5924b59e463021500940a85cdf930bfe657fec5f14fd6ebe05029fa3502818040fb57c2f131f0c05561e4297432725446bdc5c5b27ee088c02580c24caf3d3f634833746036b92490ff5ac94ce132c9e0470449b00d097ad5eb8a12dae9f483724b5f6a78029801e3fb95cf83c3b2feeeac8ad719b791cc8f9acf478f77ce656497a939d9618344553d70c8afe35d240fa97d0207ba4b5d4f2aebcd32d39bb1038184000281806549b32b4002602b9aac494a775ee83044ffe72a805e7ff8504776b0623a423413110591348e8b5d0f74ce1833e462de4f118a935bd14a0d9a6a6ad1c698779f5a89ac2de3e09925e196e4c12b81f9a2b7164618d42d86207c54e5b01471da7b3a8c66e191b544e5bf8923d11ab784d27c5f88450eaecd516a7d5016778b0165"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>
